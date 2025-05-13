@@ -2,9 +2,11 @@ package com.aluracursos.conversor.principal;
 
 import com.aluracursos.conversor.modelos.Conversion;
 import com.aluracursos.conversor.modelos.Monedas;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.cdimascio.dotenv.Dotenv;
 
 import java.io.IOException;
 import java.net.URI;
@@ -15,7 +17,9 @@ import java.util.Scanner;
 
 public class Principal {
 	public static void main(String[] args) throws IOException, InterruptedException {
-		ApiKey apiKey = new ApiKey();
+		Dotenv dotenv = Dotenv.load();
+		String apiKey = dotenv.get("API_KEY");
+
 		Scanner sc = new Scanner(System.in);
 
 		while (true) {
@@ -23,7 +27,7 @@ public class Principal {
 			String menuOrigen = """
 					****************************
 					¡Sea bienvenida/o al Conversor de Monedas!
-
+					
 					Elija el número correspondiente a la moneda de origen (o 0 para salir):
 					
 					1) Dólar (USD)
@@ -60,7 +64,7 @@ public class Principal {
 			System.out.println("Ingrese la cantidad a convertir (formato: 999,99...): ");
 			double cantidad = sc.nextDouble();
 
-			URI direccion = URI.create("https://v6.exchangerate-api.com/v6/" + apiKey.getApiKey() + "/pair/" + origen + "/" + destino + "/" + cantidad);
+			URI direccion = URI.create("https://v6.exchangerate-api.com/v6/" + apiKey + "/pair/" + origen + "/" + destino + "/" + cantidad);
 
 			HttpClient client = HttpClient.newHttpClient();
 			HttpRequest request = HttpRequest.newBuilder().uri(direccion).build();
@@ -72,7 +76,7 @@ public class Principal {
 			mapper.enable(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION);
 			Conversion conversion = mapper.readValue(response.body(), Conversion.class);
 
-			System.out.println("El valor " + cantidad + " ["+origen+"] corresponde al valor final de => " + conversion.conversion_result() + " ["+destino+"]");
+			System.out.println("El valor " + cantidad + " [" + origen + "] corresponde al valor final de => " + conversion.conversion_result() + " [" + destino + "]");
 		}
 	}
 }

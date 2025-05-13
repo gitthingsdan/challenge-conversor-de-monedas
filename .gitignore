@@ -30,4 +30,4 @@ bin/
 
 # Custom
 /.idea/dictionaries/project.xml
-/src/com/aluracursos/conversor/principal/ApiKey.java
+.env
