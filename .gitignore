@@ -30,4 +30,4 @@ bin/
 
 # Custom
 /.idea/dictionaries/project.xml
-.env
+/.env
