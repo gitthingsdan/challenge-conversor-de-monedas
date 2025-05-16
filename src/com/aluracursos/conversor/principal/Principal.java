@@ -1,6 +1,7 @@
 package com.aluracursos.conversor.principal;
 
 import com.aluracursos.conversor.modelos.Conversion;
+import com.aluracursos.conversor.modelos.CustomObjectMapper;
 import com.aluracursos.conversor.modelos.Menu;
 import com.aluracursos.conversor.modelos.Monedas;
 
@@ -51,9 +52,7 @@ public class Principal {
 			HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 			client.close();
 
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			mapper.enable(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION);
+			ObjectMapper mapper = new CustomObjectMapper();
 			Conversion conversion = mapper.readValue(response.body(), Conversion.class);
 
 			System.out.println("El valor " + cantidad + " [" + origen + "] corresponde al valor final de => " + conversion.conversion_result() + " [" + destino + "]");
