@@ -1,19 +1,12 @@
 package com.aluracursos.conversor.principal;
 
-import com.aluracursos.conversor.modelos.Conversion;
-import com.aluracursos.conversor.modelos.CustomObjectMapper;
-import com.aluracursos.conversor.modelos.Menu;
-import com.aluracursos.conversor.modelos.Monedas;
+import com.aluracursos.conversor.modelos.*;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Scanner;
 
@@ -34,11 +27,11 @@ public class Principal {
 			Menu menu = new Menu(sc);
 
 //			Origen
-			int opcionOrigen = menu.obtenerOpcionMoneda("origen");
+			int opcionOrigen = menu.obtenerOpcionMonedaOSalir("origen");
 			Monedas origen = Monedas.values()[opcionOrigen - 1];
 
 //			Destino
-			int opcionDestino = menu.obtenerOpcionMoneda("destino");
+			int opcionDestino = menu.obtenerOpcionMonedaOSalir("destino");
 			Monedas destino = Monedas.values()[opcionDestino - 1];
 
 //			Cantidad
@@ -47,13 +40,11 @@ public class Principal {
 
 			URI direccion = URI.create("https://v6.exchangerate-api.com/v6/" + apiKey + "/pair/" + origen + "/" + destino + "/" + cantidad);
 
-			HttpClient client = HttpClient.newHttpClient();
-			HttpRequest request = HttpRequest.newBuilder().uri(direccion).build();
-			HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-			client.close();
+			ClienteAPI cliente = new ClienteAPI();
+			HttpResponse<String> respuesta = cliente.obtenerRespuesta(direccion);
 
 			ObjectMapper mapper = new CustomObjectMapper();
-			Conversion conversion = mapper.readValue(response.body(), Conversion.class);
+			Conversion conversion = mapper.readValue(respuesta.body(), Conversion.class);
 
 			System.out.println("El valor " + cantidad + " [" + origen + "] corresponde al valor final de => " + conversion.conversion_result() + " [" + destino + "]");
 		}

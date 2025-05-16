@@ -9,7 +9,7 @@ public class Menu {
 		this.sc = sc;
 	}
 
-	public int obtenerOpcionMoneda(String origenODestino) {
+	public int obtenerOpcionMonedaOSalir(String origenODestino) {
 		String mensaje = String.format("""
 				Elija el número correspondiente a la moneda de %s (o 0 para salir):
 				
