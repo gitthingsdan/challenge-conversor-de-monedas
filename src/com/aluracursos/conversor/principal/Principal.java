@@ -11,7 +11,7 @@ import java.net.http.HttpResponse;
 import java.util.Scanner;
 
 public class Principal {
-	public static void main(String[] args) throws IOException, InterruptedException {
+	public static void main(String[] args) throws IOException {
 		Dotenv dotenv = Dotenv.load();
 		String apiKey = dotenv.get("API_KEY");
 

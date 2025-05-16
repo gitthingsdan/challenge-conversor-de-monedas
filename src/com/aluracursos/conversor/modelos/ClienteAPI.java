@@ -14,8 +14,7 @@ public class ClienteAPI {
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder().uri(direccion).build();
 		try (client) {
-			HttpResponse<String> respuesta = client.send(request, HttpResponse.BodyHandlers.ofString());
-			return respuesta;
+			return client.send(request, HttpResponse.BodyHandlers.ofString());
 		} catch (IOException | InterruptedException e) {
 			System.out.println(e.getMessage());
 			return null;
