@@ -1,6 +1,7 @@
 package com.aluracursos.conversor.principal;
 
 import com.aluracursos.conversor.modelos.Conversion;
+import com.aluracursos.conversor.modelos.Menu;
 import com.aluracursos.conversor.modelos.Monedas;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -23,44 +24,23 @@ public class Principal {
 		Scanner sc = new Scanner(System.in);
 
 		while (true) {
-//			Origen
-			String menuOrigen = """
-					****************************
+			String bienvenida = """
+					******************************************
 					¡Sea bienvenida/o al Conversor de Monedas!
-					
-					Elija el número correspondiente a la moneda de origen (o 0 para salir):
-					
-					1) Dólar (USD)
-					2) Peso argentino (ARS)
-					3) Peso colombiano (COP)
-					4) Real brasileño (BRL)
-					****************************
+					******************************************
 					""";
-			System.out.println(menuOrigen);
-			int opcionOrigen = sc.nextInt();
-			if (opcionOrigen == 0) {
-				break;
-			}
+			System.out.println(bienvenida);
+			Menu menu = new Menu(sc);
+
+//			Origen
+			int opcionOrigen = menu.obtenerOpcionMoneda("origen");
 			Monedas origen = Monedas.values()[opcionOrigen - 1];
 
 //			Destino
-			String menuDestino = """
-					****************************
-					Elija el número correspondiente a la moneda de destino (o 0 para salir):
-					
-					1) Dólar (USD)
-					2) Peso argentino (ARS)
-					3) Peso colombiano (COP)
-					4) Real brasileño (BRL)
-					****************************
-					""";
-			System.out.println(menuDestino);
-			int opcionDestino = sc.nextInt();
-			if (opcionDestino == 0) {
-				break;
-			}
+			int opcionDestino = menu.obtenerOpcionMoneda("destino");
 			Monedas destino = Monedas.values()[opcionDestino - 1];
 
+//			Cantidad
 			System.out.println("Ingrese la cantidad a convertir (formato: 999,99...): ");
 			double cantidad = sc.nextDouble();
 
